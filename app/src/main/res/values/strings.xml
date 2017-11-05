@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BugStore</string>
+    <string name="Prompt_email">Email</string>
+    <string name="Prompt_password">Password</string>
+    <string name="login_bn_label">Login</string>
+    <string name="signup_text">Sign up </string>
+    <string name="Prompt_name">Name </string>
+    <string name="Prompt_con_password">Confirm password</string>
+    <string name="reg_btn_label">Register</string>
+</resources>

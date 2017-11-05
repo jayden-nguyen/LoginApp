@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FCE4EC"
+    tools:context="com.example.asus.loginapp.HomeActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text ="@string/app_name"
+            android:textSize="30dp"
+            android:textColor="@color/textColor"
+            android:layout_marginLeft="16dp"
+            />
+
+    </LinearLayout>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="100dp"
+        android:background="#F06292"
+        android:text="Hi, Can I help you?"
+        android:textColor="@color/textColor"
+        android:textSize="20dp"
+        android:padding="8dp"
+        />
+    <LinearLayout
+        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="#F8BBD0"
+        android:orientation="horizontal"
+        >
+        <EditText
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:hint="chat here"
+            />
+        <Button
+            android:layout_height="match_parent"
+            android:layout_width="60dp"
+            android:text="GO"
+            android:background="#FF1744"
+            />
+</LinearLayout>
+</RelativeLayout>
