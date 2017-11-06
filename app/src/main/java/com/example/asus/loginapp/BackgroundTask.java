@@ -64,7 +64,9 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... params) {
         String method = params[0];
-        // CHeck for Register status
+        /**
+         * Code for Register status
+         */
         if (method.equals("Register")){
             try {
                 URL url = new URL(register_url);
@@ -105,6 +107,8 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
                 e.printStackTrace();
             }
         }else if(method.equals("login")){
+            Log.d("test for login ","did it done? yes");
+
             URL url = null;
             try {
                 url = new URL(login_url);
@@ -146,10 +150,7 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
-
 
         }
         return null;
@@ -164,7 +165,7 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String json) {
         try {
             Log.d("test json",json);
-          //   progressDialog.dismiss();
+           // progressDialog.dismiss();
             JSONObject jsonObject = new JSONObject(json);
             JSONArray jsonArray = jsonObject.getJSONArray("server_response");
             JSONObject JO = jsonArray.getJSONObject(0);
