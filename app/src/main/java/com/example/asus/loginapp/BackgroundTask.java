@@ -1,3 +1,10 @@
+/*
+ *  Author: Nguyen Quang Huy aka Jayden Nguyen
+ *  Project: Bugstore - the largest didital store app
+ *  Team: 5
+ *  Created Date: 11/1/17
+ */
+
 package com.example.asus.loginapp;
 
 import android.app.Activity;
@@ -9,6 +16,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.EditText;
+
+import com.example.asus.loginapp.Activities.HomeActivity;
+import com.example.asus.loginapp.Activities.LoginActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,21 +38,26 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import static android.content.ContentValues.TAG;
 
 /**
- * Created by Asus on 11/5/2017.
+ *
  */
 
 public class BackgroundTask extends AsyncTask<String,Void,String> {
-    //Define the url of localhost
-    String register_url = "http://192.168.1.135/loginApp/register.php";
-    String login_url = "http://192.168.1.135/loginApp/login.php";
-    //Define the context
+    /**
+     * Part 1 : declare the address url of server, dialogs and context
+     */
+    //Define the url of localhost register file and login file
+    String register_url = "http://bugstore.000webhostapp.com/register.php";
+    String login_url = "http://bugstore.000webhostapp.com/login.php";
+    // Variable to store user_id and user_name
+    public String user_id,user_name,login_code;
+    //Define the context and activity
     Context ctx;
     Activity activity;
-    //Alert
+    //Define the dialogs
     AlertDialog.Builder builder;
-    //Progress dialog
     ProgressDialog progressDialog;
     //Constructor
     public BackgroundTask(Context ctx){
@@ -50,81 +65,109 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
         activity = (Activity)ctx;
     }
 
+    /**
+     * Part 2: Establish the connection with server and get/set values to the database
+     *      and announce the result for users
+     *
+     *
+     * on OnPreExucute method, We define and show the Progress dialog
+     * The method is called after the register/login button is pressed
+     * and the progress dialog need to appear to announce that user should wait
+     * for connecting server
+     */
     @Override
     protected void onPreExecute() {
        builder = new AlertDialog.Builder(activity);
-       /* ProgressDialog progressDialog = new ProgressDialog(ctx);
+        progressDialog = new ProgressDialog(ctx);
         progressDialog.setTitle("please wait");
         progressDialog.setMessage("Connecting to server");
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
-        progressDialog.show();*/
-}
+        progressDialog.show();
+    }
 
+    /**
+     * on doInBackground method, we established the connection between devices and server for
+     * register/login function
+     * The connection used HTTP protocol
+     * @param params define the method user choose (login or register)
+     * @return the json From server announce the login.register was succeeded or not
+     */
     @Override
     protected String doInBackground(String... params) {
+        // Get the status (Login or Register)
         String method = params[0];
         /**
          * Code for Register status
          */
         if (method.equals("Register")){
             try {
+                // established the connection via HTTP
                 URL url = new URL(register_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
-                //Set the output to write to server
+                //Set the outputStream to write to server
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
                 String name = params[1];
                 String email = params[2];
                 String password = params[3];
+                //construct data to write
                 String data = URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"+
                         URLEncoder.encode("email","UTF-8")+"="+URLEncoder.encode(email,"UTF-8")+"&"+
                         URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
+                //Write and close the connection
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
                 outputStream.close();
-                //Get the input to read from server
+                //Get the inputStream to read from server
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder stringBuilder = new StringBuilder();
                 String line = "";
+                //Read data from server
                 while((line=bufferedReader.readLine())!= null ){
                     stringBuilder.append(line + "\n");
                 }
+                //disconnect the connection and return the json values
                 httpURLConnection.disconnect();
-                Thread.sleep(5000);
+              //  Thread.sleep(5000);
                 return stringBuilder.toString().trim();
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
-        }else if(method.equals("login")){
+        }else
+        /**
+         * Check for Login status
+         */
+            if(method.equals("login")){
             Log.d("test for login ","did it done? yes");
 
             URL url = null;
             try {
+                // established the connection via HTTP
                 url = new URL(login_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
-                //Set the output to write to server
+                //Set the outputStream to write to server
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
                 String email,password;
                 email = params[1];
                 password = params[2];
+                //construct data to write
                 String data =
                         URLEncoder.encode("email","UTF-8")+"="+URLEncoder.encode(email,"UTF-8")+"&"+
                         URLEncoder.encode("password","UTF-8")+"="+URLEncoder.encode(password,"UTF-8");
+                //write and close the outputStream
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -134,11 +177,14 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder stringBuilder = new StringBuilder();
                 String line = "";
+                //Read from server
                 while((line=bufferedReader.readLine())!= null ){
                     stringBuilder.append(line + "\n");
                 }
                 httpURLConnection.disconnect();
-                Thread.sleep(5000);
+              //  Thread.sleep(5000);
+                Log.d("test doinBackground","Did we finish it");
+
                 return stringBuilder.toString().trim();
 
 
@@ -151,7 +197,6 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
         return null;
     }
@@ -161,25 +206,45 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
         super.onProgressUpdate(values);
     }
 
+    /**
+     * on OnPostExcute method, we received the json from server and announce the result
+     * to the users through alert dialogs
+     * @param json is the data return from server to get the info about login/register status
+     *             is success or not or error
+     */
+
     @Override
     protected void onPostExecute(String json) {
         try {
-            Log.d("test json",json);
-           // progressDialog.dismiss();
+            // Hide the progress dialog
+            hideProgressDialog();
+
+            // Process json
             JSONObject jsonObject = new JSONObject(json);
             JSONArray jsonArray = jsonObject.getJSONArray("server_response");
             JSONObject JO = jsonArray.getJSONObject(0);
             String code = JO.getString("code");
             String message = JO.getString("message");
+            // check for code status
             if(code.equals("reg_true")){
+                //alert register success
                 showDialog("Registration success", message, code);
             }else if(code.equals("reg_false")){
+                //alert register failed
                 showDialog("Registration failed",message,code);
             }else if(code.equals("login_true")){
+                // Save id and user_name
+                user_id = JO.getString("id");
+                user_name = JO.getString("user_name");
+                final SharedPrefManager sharedPrefManager = new SharedPrefManager(activity);
+                sharedPrefManager.createSessionName(user_name);
+                sharedPrefManager.createSessionId(user_id);
+                //start Home
                 Intent intent = new Intent(activity,HomeActivity.class);
-                intent.putExtra("message",message);
                 activity.startActivity(intent);
             }else if(code.equals("login_false")){
+                //display Login failed dialog
+                hideProgressDialog();
                 builder.setMessage(message);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -190,6 +255,8 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
                         email.setText("");
                         password.setText("");
                         dialog.dismiss();
+                        Intent intent = new Intent(activity,LoginActivity.class);
+                        activity.startActivity(intent);
                     }
                 });
                 AlertDialog alertDialog = builder.create();
@@ -200,6 +267,13 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
         }
 
     }
+
+    /**
+     * this method help devices show the dialog to announce to users
+     * @param title is the title of dialog
+     * @param message is the content of the dialog
+     * @param code is the status of register/login
+     */
     public void showDialog(String title,String message,String code){
         builder.setTitle(title);
         if(code.equals("reg_true")||(code.equals("reg_false"))){
@@ -214,5 +288,29 @@ public class BackgroundTask extends AsyncTask<String,Void,String> {
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
+    }
+
+    /**
+     * this method hide the Progress Dialog when the connection to server is established
+     */
+    private void hideProgressDialog() {
+        try {
+
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+                Log.d("Did it work","???");
+            }
+            if (progressDialog == null){
+                Log.d("It's null","ok");
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, ex.getMessage(), ex);
+        }
+    }
+    public String getUserId(){
+        return user_id;
+    }
+    public String getLoginCode(){
+        return login_code;
     }
 }

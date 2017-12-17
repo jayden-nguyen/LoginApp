@@ -1,4 +1,4 @@
-package com.example.asus.loginapp;
+package com.example.asus.loginapp.Activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -8,10 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.asus.loginapp.BackgroundTask;
+import com.example.asus.loginapp.R;
+
 public class RegisterActivity extends AppCompatActivity {
     EditText Name,Email,Password,ConPass;
     Button reg_button;
     AlertDialog.Builder builder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
                     BackgroundTask backgroundTask = new BackgroundTask(RegisterActivity.this);
                     backgroundTask.execute("Register",Name.getText().toString(),Email.getText().toString(),Password.getText().toString());
                 }
+
             }
         });
     }

@@ -11,16 +11,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".Activities.RegisterActivity" />
+        <activity android:name=".Activities.LoginActivity" />
+        <activity android:name=".Activities.HomeActivity" />
+        <activity android:name=".Activities.CreateContentActivity" />
+        <activity android:name=".Activities.ChatActivity" />
+        <activity android:name=".Activities.ProfileUserActivity" />
+        <activity android:name=".Activities.MainCommunity$UpdateUserProfile" />
+        <activity android:name=".ProductProfile" />
+        <activity android:name=".Activities.UpdateProductProfile" />
+        <activity android:name=".Activities.History" />
+        <activity android:name=".Activities.MainCommunity" />
+        <activity android:name=".CreateAsk" />
+        <activity android:name=".Activities.ChangePassword" />
+        <activity android:name=".Activities.UpdateProfileUser"></activity>
     </application>
 
 </manifest>

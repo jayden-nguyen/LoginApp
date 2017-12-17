@@ -50,7 +50,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Community"
-            android:id="@+id/community"
             android:textColor="#000"
             android:padding="8dp"
             />
@@ -59,30 +58,30 @@
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/menu"
+        android:id="@+id/button_ask"
+
         >
         <Button
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:background="@drawable/buttonselector"
-            android:id = "@+id/add_info_btn"
-            android:text="+"
-            android:textSize="40dp"
-            android:textColor="@color/textColor"
-            android:layout_alignParentTop="true"
+            android:layout_height="wrap_content"
+            android:text = "ask"
+            android:id = "@+id/create_ask_button"
             android:layout_centerHorizontal="true"
-            android:layout_margin="8dp"
-            android:onClick="updateInfo"
             />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id = "@+id/question_area"
+        android:layout_below="@+id/button_ask">
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/add_info_btn"
-            android:orientation ="vertical"
-            android:id ="@+id/list_product_info"
-            android:divider ="@null"
-
+            android:id="@+id/question_list"
             />
-    </RelativeLayout>
+
+    </LinearLayout>
+
 </RelativeLayout>
